@@ -97,3 +97,6 @@ class main:
         while True:
             time.sleep(1)
             pass
+
+class UserManager:
+    
