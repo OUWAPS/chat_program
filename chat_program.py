@@ -111,3 +111,11 @@ class UserManager:
         lock.acquire()  # 스레드 동기화를 막기위한 락
         self.users[username] = (conn, addr)
         lock.release()  # 업데이트 후 락 해제
+
+    def removeUser(self, username):  # 사용자를 제거하는 함수
+        if username not in self.users:
+            return
+
+        lock.acquire()
+        del self.users[username]
+        lock.release()
