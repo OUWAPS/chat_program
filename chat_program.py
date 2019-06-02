@@ -99,4 +99,5 @@ class main:
             pass
 
 class UserManager:
-    
+        def __init__(self):
+            self.users = {}  # 사용자의 등록 정보를 담을 사전 {사용자 이름:(소켓,주소),...}
