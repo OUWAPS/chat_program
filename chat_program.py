@@ -112,6 +112,8 @@ class UserManager:
         self.users[username] = (conn, addr)
         lock.release()  # 업데이트 후 락 해제
 
+        return username
+
     def removeUser(self, username):  # 사용자를 제거하는 함수
         if username not in self.users:
             return
