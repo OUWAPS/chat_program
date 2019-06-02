@@ -119,3 +119,12 @@ class UserManager:
         lock.acquire()
         del self.users[username]
         lock.release()
+
+    def messageHandler(self, username, msg):  # 전송한 msg를 처리하는 부분
+        if msg[0] != '/':  # 보낸 메세지의 첫문자가 '/'가 아니면
+            self.sendMessageToAll('[%s] %s' % (username, msg))
+            return
+
+        if msg.strip() == '/quit':  # 보낸 메세지가 'quit'이면
+            self.removeUser(username)
+            return -1
