@@ -106,3 +106,8 @@ class UserManager:
         if username in self.users:  # 이미 등록된 사용자라면
             conn.send('이미 등록된 사용자입니다.\n'.encode())
             return None
+
+        # 새로운 사용자를 등록함
+        lock.acquire()  # 스레드 동기화를 막기위한 락
+        self.users[username] = (conn, addr)
+        lock.release()  # 업데이트 후 락 해제
