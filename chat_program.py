@@ -128,3 +128,7 @@ class UserManager:
         if msg.strip() == '/quit':  # 보낸 메세지가 'quit'이면
             self.removeUser(username)
             return -1
+
+    def sendMessageToAll(self, msg):
+        for conn, addr in self.users.values():
+            conn.send(msg.encode())
