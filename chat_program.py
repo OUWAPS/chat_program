@@ -1,3 +1,5 @@
+from socket import *
+
 class main:
     def __init__(self):
         self.menu()
@@ -32,3 +34,14 @@ class main:
             print("잘못 입력하셨습니다.")
             print("")
             self.menu()
+
+    def send(self, sock):
+        while True:
+            sendData = input('>>>')
+            sock.send(sendData.encode('utf-8'))
+
+
+    def receive(self, sock):
+        while True:
+            recvData = sock.recv(1024)
+            print('상대방 :', recvData.decode('utf-8'))
