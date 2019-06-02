@@ -78,3 +78,22 @@ class main:
         while True:
             time.sleep(1)
             pass
+
+    def clinet(self):
+        ip = input("ip를 입력해주세요: ")
+        port = int(input("port를 입력해주세요: "))
+
+        clientSock = socket(AF_INET, SOCK_STREAM) # 소켓 설정
+        clientSock.connect((ip, port)) # 해당 ip, port로 소켓 접속
+
+        print('접속 완료')
+
+        sender = threading.Thread(target=self.send, args=(clientSock,)) # 상대방 아이피를 넘겨주고 메세지 보내는 쓰레드 생성
+        receiver = threading.Thread(target=self.receive, args=(clientSock,)) # 상대방 아이피 넘겨주고 메세지 받는 쓰레드 생성
+
+        sender.start() # 메세지 보내는 쓰레드 시작.
+        receiver.start() # 메세지 받는 쓰레드 시작.
+
+        while True:
+            time.sleep(1)
+            pass
