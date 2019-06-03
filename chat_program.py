@@ -140,3 +140,33 @@ class UserManager:
     def sendMessageToAll(self, msg):
         for conn, addr in self.users.values():
             conn.send(msg.encode())
+
+class MyTcpHandler(socketserver.BaseRequestHandler):
+    userman = UserManager()
+
+    def handle(self):  # 클라이언트가 접속시 클라이언트 주소 출력
+        print('[%s] 연결됨' % self.client_address[0])
+
+        try:
+            username = self.registerUsername() # 상대 이름 받아오기
+            msg = self.request.recv(1024) # 메세지 받아오기
+            while msg:
+                print(msg.decode())
+                if self.userman.messageHandler(username, msg.decode()) == -1:
+                    self.request.close()
+                    break
+                msg = self.request.recv(1024)
+
+        except Exception as e:
+            print(e)
+
+        print('[%s] 접속종료' % self.client_address[0])
+        self.userman.removeUser(username)
+
+    def registerUsername(self):
+        while True:
+            self.request.send('로그인ID:'.encode()) # 로그인 ID 요청
+            username = self.request.recv(1024)
+            username = username.decode().strip()
+            if self.userman.addUser(username, self.request, self.client_address):
+                return username
