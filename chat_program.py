@@ -140,3 +140,6 @@ class UserManager:
     def sendMessageToAll(self, msg):
         for conn, addr in self.users.values():
             conn.send(msg.encode())
+
+class MyTcpHandler(socketserver.BaseRequestHandler):
+    userman = UserManager()
