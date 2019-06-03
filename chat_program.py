@@ -162,3 +162,11 @@ class MyTcpHandler(socketserver.BaseRequestHandler):
 
         print('[%s] 접속종료' % self.client_address[0])
         self.userman.removeUser(username)
+
+    def registerUsername(self):
+        while True:
+            self.request.send('로그인ID:'.encode()) # 로그인 ID 요청
+            username = self.request.recv(1024)
+            username = username.decode().strip()
+            if self.userman.addUser(username, self.request, self.client_address):
+                return username
