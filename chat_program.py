@@ -112,6 +112,9 @@ class UserManager:
         self.users[username] = (conn, addr)
         lock.release()  # 업데이트 후 락 해제
 
+        self.sendMessageToAll('[%s]님이 입장했습니다.' % username)
+        print('+++ 대화 참여자 수 [%d]' % len(self.users))
+
         return username
 
     def removeUser(self, username):  # 사용자를 제거하는 함수
@@ -121,6 +124,9 @@ class UserManager:
         lock.acquire()
         del self.users[username]
         lock.release()
+
+        self.sendMessageToAll('[%s]님이 퇴장했습니다.' % username)
+        print('--- 대화 참여자 수 [%d]' % len(self.users))
 
     def messageHandler(self, username, msg):  # 전송한 msg를 처리하는 부분
         if msg[0] != '/':  # 보낸 메세지의 첫문자가 '/'가 아니면
@@ -134,3 +140,6 @@ class UserManager:
     def sendMessageToAll(self, msg):
         for conn, addr in self.users.values():
             conn.send(msg.encode())
+
+class MyTcpHandler(socketserver.BaseRequestHandler):
+    userman = UserManager()
