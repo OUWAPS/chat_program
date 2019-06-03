@@ -170,3 +170,18 @@ class MyTcpHandler(socketserver.BaseRequestHandler):
             username = username.decode().strip()
             if self.userman.addUser(username, self.request, self.client_address):
                 return username
+
+class ChatingServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+    pass
+
+    def runServer():
+        ip = input("ip를 입력해주세요: ")
+        port = int(input("port를 입력해주세요: "))
+
+    try:
+        server = ChatingServer((ip, port), MyTcpHandler) # class로 ip, port 넘겨주기
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print('--- 채팅 서버를 종료합니다.')
+        server.shutdown()
+        server.server_close()
