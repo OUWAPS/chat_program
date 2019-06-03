@@ -170,3 +170,6 @@ class MyTcpHandler(socketserver.BaseRequestHandler):
             username = username.decode().strip()
             if self.userman.addUser(username, self.request, self.client_address):
                 return username
+
+class ChatingServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+    pass
