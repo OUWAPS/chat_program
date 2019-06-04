@@ -185,3 +185,34 @@ class ChatingServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
         print('--- 채팅 서버를 종료합니다.')
         server.shutdown()
         server.server_close()
+
+    def rcvMsg(sock):
+        while True:
+            try:
+                data = sock.recv(1024)
+                if not data:
+                    break
+                print(data.decode())
+            except:
+                pass
+
+    def runChat():
+        import socket
+        ip = input("ip를 입력해주세요: ")
+        port = int(input("port를 입력해주세요: "))
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock: # 소켓 설정
+            sock.connect((ip, port)) # 소켓 접속 시도
+            t = Thread(target=rcvMsg, args=(sock,)) # 서버와 통신 쓰레드 구축
+            t.daemon = True
+            t.start() # 쓰레드 시작
+
+            while True:
+                msg = input()
+                if msg == '/quit':
+                    sock.send(msg.encode())
+                    break
+
+                sock.send(msg.encode())
+
+if __name__ == '__main__':
+    main()
