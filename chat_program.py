@@ -213,3 +213,6 @@ class ChatingServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
                     break
 
                 sock.send(msg.encode())
+
+if __name__ == '__main__':
+    main()
