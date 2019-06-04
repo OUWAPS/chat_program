@@ -185,3 +185,13 @@ class ChatingServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
         print('--- 채팅 서버를 종료합니다.')
         server.shutdown()
         server.server_close()
+
+    def rcvMsg(sock):
+        while True:
+            try:
+                data = sock.recv(1024)
+                if not data:
+                    break
+                print(data.decode())
+            except:
+                pass
